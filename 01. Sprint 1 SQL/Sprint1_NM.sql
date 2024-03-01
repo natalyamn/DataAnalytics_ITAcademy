@@ -53,13 +53,13 @@ SELECT COUNT(id) - COUNT(DISTINCT id) AS 'cantidad compañias duplicadas'
 FROM transactions.company;
 
 SELECT COUNT(company_id) 'cantidad total de compañias', 
-		COUNT(DISTINCT company_id) AS 'cantidad de compañias unicas'
+	COUNT(DISTINCT company_id) AS 'cantidad de compañias unicas'
 FROM transactions.transaction; 
 
 -- Ejercicio 2
 #¿En qué día se realizaron las cinco ventas más costosas? Muestra la fecha de la transacción y la sumatoria de la cantidad de dinero.
 SELECT DATE(timestamp) AS 'Fecha transacción',
-		SUM(amount) AS 'cantidad de dinero'
+	SUM(amount) AS 'cantidad de dinero'
 FROM transactions.transaction
 WHERE declined=0
 GROUP BY DATE(timestamp)
@@ -115,7 +115,7 @@ FROM transactions.company AS c
 	JOIN transactions.transaction AS t
     ON c.id=t.company_id
 WHERE DATE(timestamp) IN ('2022-03-16', '2022-02-28', '2022-02-13')
-ORDER BY timestamp;
+ORDER BY Fecha_hora_transaccion;
 
 -- Nombre e identificativo de las compañias 
 SELECT c.id AS identificador, 
@@ -125,6 +125,8 @@ FROM transactions.company AS c
     ON c.id=t.company_id
 WHERE DATE(timestamp) IN ('2022-03-16', '2022-02-28', '2022-02-13')
 GROUP BY identificador;
+
+-- ó 
 
 SELECT DISTINCT (c.id) AS identificador, 
 		company_name AS nombre_compañia 
