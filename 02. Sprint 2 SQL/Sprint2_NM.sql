@@ -33,21 +33,35 @@ WHERE declined=0;
 -- subquery 2: 
 SELECT company_id, SUM(amount)
 FROM transactions.transaction
-WHERE declined=0 AND amount > (SELECT ROUND(AVG(amount),2)
+WHERE declined=0 
+GROUP BY company_id
+HAVING SUM(amount) > (SELECT ROUND(AVG(amount),2)
 								FROM transactions.transaction
-								WHERE declined=0)
-GROUP BY company_id;
+								WHERE declined=0);
 
--- query principal:
+-- método 1: query principal con subconsultas en la cláusula JOIN:
 SELECT c.*
 FROM transactions.company AS c
 JOIN (SELECT company_id, SUM(amount) AS suma_transaccions
 		FROM transactions.transaction
-		WHERE declined=0 AND amount > (SELECT ROUND(AVG(amount),2)
-										FROM transactions.transaction
-										WHERE declined=0)
-		GROUP BY company_id) AS comp_trans_sup
+		WHERE declined=0 
+        GROUP BY company_id
+        HAVING SUM(amount) > (SELECT ROUND(AVG(amount),2)
+							FROM transactions.transaction
+							WHERE declined=0)) AS comp_trans_sup
 ON c.id=comp_trans_sup.company_id;
+
+-- método 2: query principal con subconsulta en la cláusula HAVING:
+SELECT c.*
+FROM transactions.company AS c
+JOIN transactions.transaction AS t
+ON c.id=t.company_id
+WHERE declined=0 
+GROUP BY c.id
+HAVING SUM(amount) > (SELECT ROUND(AVG(amount),2)
+					FROM transactions.transaction
+					WHERE declined=0)
+ORDER BY c.id;
 
 
 -- Ejercicio 3
