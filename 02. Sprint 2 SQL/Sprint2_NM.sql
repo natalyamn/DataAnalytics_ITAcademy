@@ -88,6 +88,7 @@ WHERE NOT EXISTS (SELECT DISTINCT company_id
 				FROM transactions.transaction t
                 WHERE c.id=t.company_id);
 
+
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 /* NIVEL 2 */
 
@@ -102,8 +103,8 @@ WHERE company_name='Non Institute';
 -- query principal:
 SELECT company_name AS nombre_compañia, t.*
 FROM transactions.transaction t
-	JOIN transactions.company c
-	ON t.company_id=c.id
+JOIN transactions.company c
+ON t.company_id=c.id
 WHERE c.country=(SELECT country
 				FROM transactions.company
 				WHERE company_name='Non Institute');
@@ -198,11 +199,11 @@ FROM (SELECT company_id, COUNT(*) AS aceptadas
 		FROM transactions.transaction 
 		WHERE declined=0 
 		GROUP BY company_id) t_acep
-	LEFT JOIN (SELECT company_id, COUNT(*) AS rechazadas
+LEFT JOIN (SELECT company_id, COUNT(*) AS rechazadas
 			FROM transactions.transaction 
 			WHERE declined=1 
 			GROUP BY company_id) t_rech
-		ON t_acep.company_id=t_rech.company_id
-	JOIN transactions.company c
-		ON t_acep.company_id=c.id
-ORDER BY t_acep.aceptadas + IFNULL(t_rech.rechazadas,0) DESC, t_acep.company_id;
+	ON t_acep.company_id=t_rech.company_id
+JOIN transactions.company c
+	ON t_acep.company_id=c.id
+ORDER BY (t_acep.aceptadas + IFNULL(t_rech.rechazadas,0)) DESC, t_acep.company_id;
