@@ -52,7 +52,14 @@ SET AUTOCOMMIT = ON;
 ALTER TABLE credit_card
 MODIFY expiring_date DATE;
 
--- birth_date de la tabla user en formato varchar; a ver si es posible modificarlos a DATE
 
+-- birth_date de la tabla user en formato varchar; los modificamos a DATE
 
+UPDATE user
+SET birth_date=STR_TO_DATE(birth_date, '%b %d, %Y')
+WHERE id > 0;
+
+ALTER TABLE user
+MODIFY birth_date DATE;
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
