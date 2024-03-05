@@ -30,6 +30,29 @@ ADD FOREIGN KEY (credit_card_id) REFERENCES credit_card(id);
 ALTER TABLE transaction
 ADD FOREIGN KEY (user_id) REFERENCES user(id);
 
--- expiring_date de la tabla credit_card en formato varchar para poder cargar los datos; vemos a ver si es posible modificarlos a DATE (YYYY-MM-DD)
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-- expiring_date de la tabla credit_card en formato varchar para poder cargar los datos; modificamos la fecha string a DATE (YYYY-MM-DD)
+
+# desactivamos el 'guardado' automatico para poder retroceder con ROLLBACK en caso de necesitarlo
+SET AUTOCOMMIT = OFF; 
+# verificamos si funciona el cambio de formato de string a date: todo OK 
+SELECT expiring_date, STR_TO_DATE(expiring_date, '%m/%d/%y')
+FROM credit_card; 
+# desactivamos temporalmente la actualizacion segura pq de lo contrario salta error
+SET SQL_SAFE_UPDATES = 0; 
+# hacemos el update de la columna expiring_date a la fecha en formato DATE
+UPDATE credit_card
+SET expiring_date = STR_TO_DATE(expiring_date, '%m/%d/%y');
+# verificamos que esté bien y activamos el modo de actualizacion segura de nuevo
+SET SQL_SAFE_UPDATES = 1; 
+# guardamos y activamos el modo de autoguardado de nuevo
+COMMIT;
+SET AUTOCOMMIT = ON;
+#modificamos el formato de varchar a date
+ALTER TABLE credit_card
+MODIFY expiring_date DATE;
+
 -- birth_date de la tabla user en formato varchar; a ver si es posible modificarlos a DATE
 
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
