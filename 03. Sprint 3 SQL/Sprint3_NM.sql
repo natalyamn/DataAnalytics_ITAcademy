@@ -15,18 +15,16 @@ CREATE TABLE IF NOT EXISTS credit_card (
     expiring_date VARCHAR(100)
 );
 
--- creamos modificaciones en la tabla de transacciones: creamos indices para optimizar las busquedas, creamos foreign keys
-
+-- hacemos modificaciones en la tabla de transacciones: creamos indices para optimizar las busquedas, creamos foreign keys
 CREATE INDEX idx_credit_card_id ON transaction(credit_card_id);
 ALTER TABLE transaction
 ADD FOREIGN KEY (credit_card_id) REFERENCES credit_card(id);
 
+CREATE INDEX idx_user_id ON transaction(user_id);
 ALTER TABLE transaction
 ADD FOREIGN KEY (user_id) REFERENCES user(id);
-CREATE INDEX idx_user_id ON transaction(user_id);
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 -- expiring_date de la tabla credit_card en formato varchar para poder cargar los datos; modificamos la fecha string a DATE (YYYY-MM-DD)
-
 # desactivamos el 'guardado' automatico para poder retroceder con ROLLBACK en caso de necesitarlo
 SET AUTOCOMMIT = OFF; 
 # verificamos si funciona el cambio de formato de string a date: todo OK 
@@ -46,8 +44,7 @@ SET AUTOCOMMIT = ON;
 ALTER TABLE credit_card
 MODIFY expiring_date DATE;
 ---------------------------------------------------------------------------
--- birth_date de la tabla user en formato varchar; los modificamos a DATE
-
+-- birth_date de la tabla user en formato varchar; lo modificamos a DATE
 UPDATE user
 SET birth_date=STR_TO_DATE(birth_date, '%b %d, %Y')
 WHERE id > 0;
@@ -55,7 +52,7 @@ WHERE id > 0;
 ALTER TABLE user
 MODIFY birth_date DATE;
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-/* Ejercicio 2. El departamento de Recursos Humanos ha identificado un error en el número de cuenta del usuario con: ID CcU-2938. 
+/* Ejercicio 2. El departamento de Recursos Humanos ha identificado un error en el número de cuenta del usuario con ID CcU-2938. 
 Se requiere actualizar la información que identifica una cuenta bancaria a nivel internacional (identificado como "IBAN"): TR323456312213576817699999. 
 */
 -- antes del cambio: IBAN TR301950312213576817638661
@@ -73,12 +70,15 @@ VALUES ('108B1D1D-5B23-A76C-55EF-C568E49A99DD', 'CcU-9999', 'b-9999', '9999', '8
 SET foreign_key_checks = 0;
 SET foreign_key_checks = 1;
 
-select * from transaction where id= '108B1D1D-5B23-A76C-55EF-C568E49A99DD';
+SELECT * 
+FROM transaction
+WHERE id='108B1D1D-5B23-A76C-55EF-C568E49A99DD';
+
 #Ejercicio 4. Desde recursos humanos te solicitan eliminar la columna "pan" de la tabla credit_card. Recuerda mostrar el cambio realizado. 
 ALTER TABLE credit_card
 DROP COLUMN pan;
 
-call all_credit_card();
+CALL all_credit_card();
 
 /* NIVEL 2 */
 
@@ -122,7 +122,26 @@ WHERE pais_residencia = 'Germany';
 /* Ejercicio 1. La próxima semana tendrás una nueva reunión con los gerentes de marketing. Un compañero de tu equipo realizó modificaciones en la base de datos, 
 pero no recuerda cómo las realizó. Te pide que le ayudes a dejar los comandos ejecutados para obtener las modificaciones. 
 */
-  
+-- cambio nombre de columna email en la tabla user
+ALTER TABLE user
+RENAME COLUMN email TO personal_email;
+
+-- borrar columna website de la tabla company
+ALTER TABLE company
+DROP COLUMN website;
+
+-- añadir columna fecha_actual en la tabla credit_card
+ALTER TABLE credit_card
+ADD COLUMN fecha_actual DATE;
+
+UPDATE credit_card
+SET fecha_actual = CURRENT_DATE()
+WHERE id BETWEEN 'CcU-2938' AND 'CcU-4856';
+
+-- modificar tipo de dato de columna pin de la tabla credit_card
+ALTER TABLE credit_card
+MODIFY COLUMN pin VARCHAR(4);
+
 
 /* Ejercicio 2. La empresa también te solicita crear una vista llamada "InformeTecnico" que contenga la siguiente información: 
 ID de la transacción 
