@@ -218,3 +218,31 @@ LEFT JOIN (SELECT company_id, COUNT(*) AS rechazadas
 JOIN transactions.company c
 	ON t_acep.company_id=c.id
 ORDER BY (t_acep.aceptadas + IFNULL(t_rech.rechazadas,0)) DESC, t_acep.company_id;
+
+
+-- metodo 2: definiendo las tablas de operaciones aceptadas y rechazadas al inicio y haciendo la consulta a continuación
+WITH 
+t_acep AS 
+(SELECT company_id, COUNT(*) AS aceptadas
+FROM transactions.transaction t
+WHERE declined=0 
+GROUP BY company_id), 
+t_rech AS 
+(SELECT company_id, COUNT(*) AS rechazadas
+FROM transactions.transaction t
+WHERE declined=1
+GROUP BY company_id)
+SELECT 	c.company_name AS 'nombre compañia',
+		t_acep.company_id AS 'identificador compañia', 
+		t_acep.aceptadas AS 'transacciones aceptadas', 
+		IFNULL(t_rech.rechazadas,0) AS 'transacciones rechazadas', 
+        CASE
+			WHEN (t_acep.aceptadas + IFNULL(t_rech.rechazadas,0)) < 4 THEN 'Menos de 4 transacciones'
+            ELSE 'Más de 4 transacciones'
+		END AS cantidad_transacciones
+FROM t_acep
+LEFT JOIN t_rech
+	ON t_acep.company_id=t_rech.company_id
+JOIN transactions.company c
+	ON t_acep.company_id=c.id
+ORDER BY (t_acep.aceptadas + IFNULL(t_rech.rechazadas,0)) DESC, t_acep.company_id;
