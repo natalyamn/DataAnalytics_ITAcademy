@@ -3,7 +3,7 @@
 CREATE DATABASE IF NOT EXISTS transactionsdb;
 USE transactionsdb;
 
--- creamos tabla transaction para transactions.csv
+-- creamos tabla transaction para transactions.csv (sin columna de product_ids)
 CREATE TABLE IF NOT EXISTS transaction (
 	id VARCHAR(50) NOT NULL,
     card_id VARCHAR(15) NOT NULL,
@@ -60,7 +60,7 @@ CREATE TABLE IF NOT EXISTS user (
     PRIMARY KEY(id)
 );
 
--- creamos tabla transaction_product para saberw3w3 los productos que se compraron en cada transacción (transactions_product.csv)
+-- creamos tabla transaction_product para saber los productos que se compraron en cada transacción (transactions_product.csv, archivo transformado previamente en power query)
 CREATE TABLE IF NOT EXISTS transaction_product (
 	transaction_id VARCHAR(50) NOT NULL,
     product_id INT NOT NULL,

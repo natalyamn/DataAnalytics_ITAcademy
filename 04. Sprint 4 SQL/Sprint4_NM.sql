@@ -63,8 +63,8 @@ tienes product_ids. */
 WITH ventas AS
 (
 SELECT 	product_id,
-		SUM(CASE WHEN declined = 0 THEN 1 ELSE 0 END) as cant_acept,
-		SUM(CASE WHEN declined = 1 THEN 1 ELSE 0 END) as cant_rech
+		SUM(CASE WHEN declined = 0 THEN 1 ELSE 0 END) AS cant_acept,
+		SUM(CASE WHEN declined = 1 THEN 1 ELSE 0 END) AS cant_rech
 FROM transaction_product tp
 JOIN transaction t 
 ON tp.transaction_id = t.id
