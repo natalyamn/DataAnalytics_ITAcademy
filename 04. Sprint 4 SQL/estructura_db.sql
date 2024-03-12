@@ -4,7 +4,6 @@ CREATE DATABASE IF NOT EXISTS transactionsdb;
 USE transactionsdb;
 
 -- creamos tabla transaction para transactions.csv
-DROP TABLE IF EXISTS transaction;
 CREATE TABLE IF NOT EXISTS transaction (
 	id VARCHAR(50) NOT NULL,
     card_id VARCHAR(15) NOT NULL,
@@ -35,7 +34,7 @@ CREATE TABLE IF NOT EXISTS company (
 -- creamos tabla credit_card para credit_cards.csv 
 CREATE TABLE IF NOT EXISTS credit_card (
 	id VARCHAR(15),
-    user_id INT, 			-- OJO!! ESTA RELACIONADA CON LA TABLA USER?
+    user_id INT, 			
     iban VARCHAR(100),
     pan VARCHAR(50),
     pin INT, 
@@ -61,8 +60,7 @@ CREATE TABLE IF NOT EXISTS user (
     PRIMARY KEY(id)
 );
 
--- creamos tabla transaction_product para saber los productos que se compraron en cada transacción (transactions_product.csv)
-DROP TABLE IF EXISTS transaction_product;
+-- creamos tabla transaction_product para saberw3w3 los productos que se compraron en cada transacción (transactions_product.csv)
 CREATE TABLE IF NOT EXISTS transaction_product (
 	transaction_id VARCHAR(50) NOT NULL,
     product_id INT NOT NULL,
@@ -71,7 +69,6 @@ CREATE TABLE IF NOT EXISTS transaction_product (
 );
 
 -- creamos tabla product para products.csv
-DROP TABLE IF EXISTS product;
 CREATE TABLE IF NOT EXISTS product (
 	id INT,
     product_name VARCHAR(255),
