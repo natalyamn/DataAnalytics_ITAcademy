@@ -1,3 +1,5 @@
+USE operations;
+
 /* NIVEL 1 */
 
 #Ejercicio 1. Realiza una subconsulta que muestre a todos los usuarios con más de 30 transacciones utilizando al menos 2 tablas. 
