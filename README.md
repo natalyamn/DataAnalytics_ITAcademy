@@ -1,6 +1,6 @@
 # Repositorio de Ejercicios del Bootcamp Data Analytics de IT Academy
 
-## mySQL Workbench
+## MySQL Workbench
 
 Sprint 1: Nociones básicas i componentes clave en el diseño de bases de datos relacionales 
 
