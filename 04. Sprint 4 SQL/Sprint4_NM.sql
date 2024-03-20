@@ -46,7 +46,7 @@ SELECT 	card_id AS id_tarjeta,
 		END AS estado_tarjeta
 FROM trans_card
 WHERE row_transaction <= 3 
-GROUP BY card_id
+GROUP BY id_tarjeta
 HAVING COUNT(card_id) = 3
 );
 
@@ -66,7 +66,8 @@ WITH ventas AS
 (
 SELECT 	product_id,
 		SUM(CASE WHEN declined = 0 THEN 1 ELSE 0 END) AS cant_acept,
-		SUM(CASE WHEN declined = 1 THEN 1 ELSE 0 END) AS cant_rech
+		SUM(CASE WHEN declined = 1 THEN 1 ELSE 0 END) AS cant_rech,
+        COUNT(product_id) AS cant_tot
 FROM transaction_product tp
 JOIN transaction t 
 ON tp.transaction_id = t.id
@@ -76,7 +77,26 @@ ORDER BY product_id
 SELECT 	p.*,
         IFNULL(v.cant_acept,0) AS cantidad_vendida,
         IFNULL(v.cant_rech,0) AS cantidad_rechazada,
-        IFNULL(v.cant_acept,0) + IFNULL(v.cant_rech,0) AS cantidad_total
+        IFNULL(cant_tot,0) AS cantidad_total
 FROM product p
 LEFT JOIN ventas v
 ON v.product_id=p.id;
+
+----------------------------------------------------------------------------
+
+WITH transacciones AS
+(
+SELECT 	tp.*, t.declined
+FROM transaction_product tp
+JOIN transaction t
+ON tp.transaction_id=t.id
+)
+SELECT 	product_name AS producto, 
+		SUM(CASE WHEN declined=0 THEN 1 ELSE 0 END) AS cantidad_vendida,
+        SUM(CASE when declined=1 THEN 1 ELSE 0 END) AS cantidad_rechazada,
+        COUNT(product_id) AS cantidad_total
+FROM product p
+LEFT JOIN transacciones t
+	ON t.product_id=p.id
+GROUP BY producto
+ORDER BY cantidad_total DESC, producto;
