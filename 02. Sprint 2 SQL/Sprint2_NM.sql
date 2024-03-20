@@ -18,7 +18,7 @@ WHERE company_id IN (SELECT id
 -- método 2: con JOIN
 SELECT t.*
 FROM transactions.transaction t
-	JOIN transactions.company c
+JOIN transactions.company c
     ON t.company_id=c.id
 WHERE country='Germany';
 
@@ -31,23 +31,24 @@ SELECT ROUND(AVG(amount),2)
 FROM transactions.transaction
 WHERE declined=0;
 -- subquery 2: 
-SELECT company_id, SUM(amount)
+SELECT company_id, amount
 FROM transactions.transaction
 WHERE declined=0 AND amount > (SELECT ROUND(AVG(amount),2)
 								FROM transactions.transaction
-								WHERE declined=0)
-GROUP BY company_id;
+								WHERE declined=0);
 
 -- método 1: query principal con subconsultas en la cláusula JOIN:
 SELECT c.*
 FROM transactions.company AS c
-JOIN (SELECT company_id, SUM(amount) AS suma_transaccions
+JOIN (SELECT company_id, amount
 		FROM transactions.transaction
 		WHERE declined=0 AND amount > (SELECT ROUND(AVG(amount),2)
 								FROM transactions.transaction
 								WHERE declined=0)
-		GROUP BY company_id) AS comp_trans_sup
-ON c.id=comp_trans_sup.company_id;
+		) AS comp_trans_sup
+ON c.id=comp_trans_sup.company_id
+GROUP BY company_id
+ORDER BY company_id;
 
 -- método 2: query principal con subconsulta en la cláusula HAVING:
 SELECT c.*
@@ -76,10 +77,10 @@ FROM transactions.transaction t
 JOIN (SELECT id, company_name
 	FROM transactions.company
 	WHERE company_name LIKE 'c%') compañias_c
-    ON t.company_id=compañias_c.id;
+ON t.company_id=compañias_c.id;
 
 -- método 2: con JOIN
-SELECT c.company_name AS nombre_compañía, t.* 
+SELECT c.company_name AS nombre_compañia, t.* 
 FROM transactions.company c
 JOIN transactions.transaction t
 ON c.id=t.company_id
@@ -115,7 +116,7 @@ WHERE company_name='Non Institute';
 SELECT company_name AS nombre_compañia, t.*
 FROM transactions.transaction t
 JOIN transactions.company c
-ON t.company_id=c.id
+	ON t.company_id=c.id
 WHERE c.country=(SELECT country
 				FROM transactions.company
 				WHERE company_name='Non Institute');
@@ -145,7 +146,7 @@ ON c.id=sum_trans.company_id;
 -- query principal con subquery en HAVING
 SELECT c.*, SUM(amount) AS suma_transaccion
 FROM transactions.company AS c
-	JOIN transactions.transaction AS t
+JOIN transactions.transaction AS t
 	ON c.id=t.company_id
 WHERE declined=0
 GROUP BY company_id
@@ -172,10 +173,10 @@ WHERE declined=0;
 SELECT c.country AS pais, 
 		round(AVG(amount),2) AS promedio_transacciones
 FROM transactions.company c 
-	JOIN transactions.transaction t 
+JOIN transactions.transaction t 
     ON c.id=t.company_id
 WHERE declined=0
-GROUP BY c.country
+GROUP BY pais
 HAVING promedio_transacciones > (SELECT round(AVG(amount),2)
 								FROM transactions.transaction
 								WHERE declined=0);
@@ -198,10 +199,10 @@ WHERE declined=1
 GROUP BY company_id;
 
 -- query principal
-SELECT 	c.company_name AS 'nombre compañia',
-		t_acep.company_id AS 'identificador compañia', 
-		t_acep.aceptadas AS 'transacciones aceptadas', 
-		IFNULL(t_rech.rechazadas,0) AS 'transacciones rechazadas', 
+SELECT 	c.company_name AS nombre_compañia,
+		t_acep.company_id AS identificador_compañia, 
+		t_acep.aceptadas AS transacciones_aceptadas, 
+		IFNULL(t_rech.rechazadas,0) AS transacciones_rechazadas, 
         CASE
 			WHEN (t_acep.aceptadas + IFNULL(t_rech.rechazadas,0)) < 4 THEN 'Menos de 4 transacciones'
             ELSE 'Más de 4 transacciones'
@@ -217,7 +218,7 @@ LEFT JOIN (SELECT company_id, COUNT(*) AS rechazadas
 	ON t_acep.company_id=t_rech.company_id
 JOIN transactions.company c
 	ON t_acep.company_id=c.id
-ORDER BY (t_acep.aceptadas + IFNULL(t_rech.rechazadas,0)) DESC, t_acep.company_id;
+ORDER BY transacciones_aceptadas DESC, identificador_compañia;
 
 
 -- metodo 2: definiendo las tablas de operaciones aceptadas y rechazadas al inicio y haciendo la consulta a continuación
@@ -232,10 +233,10 @@ t_rech AS
 FROM transactions.transaction t
 WHERE declined=1
 GROUP BY company_id)
-SELECT 	c.company_name AS 'nombre compañia',
-		t_acep.company_id AS 'identificador compañia', 
-		t_acep.aceptadas AS 'transacciones aceptadas', 
-		IFNULL(t_rech.rechazadas,0) AS 'transacciones rechazadas', 
+SELECT 	c.company_name AS nombre_compañia,
+		t_acep.company_id AS identificador_compañia, 
+		t_acep.aceptadas AS transacciones_aceptadas, 
+		IFNULL(t_rech.rechazadas,0) AS transacciones_rechazadas, 
         CASE
 			WHEN (t_acep.aceptadas + IFNULL(t_rech.rechazadas,0)) < 4 THEN 'Menos de 4 transacciones'
             ELSE 'Más de 4 transacciones'
@@ -245,4 +246,4 @@ LEFT JOIN t_rech
 	ON t_acep.company_id=t_rech.company_id
 JOIN transactions.company c
 	ON t_acep.company_id=c.id
-ORDER BY (t_acep.aceptadas + IFNULL(t_rech.rechazadas,0)) DESC, t_acep.company_id;
+ORDER BY transacciones_aceptadas DESC, identificador_compañia;
