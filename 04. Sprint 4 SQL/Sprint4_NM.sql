@@ -4,12 +4,12 @@ USE operations;
 
 #Ejercicio 1. Realiza una subconsulta que muestre a todos los usuarios con más de 30 transacciones utilizando al menos 2 tablas. 
 SELECT u.*, user_trans.cant_trans 
-FROM user u
-JOIN (SELECT user_id, COUNT(id) AS cant_trans
-		FROM transaction
-		GROUP BY user_id
-		HAVING cant_trans > 30) user_trans
-ON u.id=user_trans.user_id;
+FROM user u,
+	(SELECT user_id, COUNT(id) AS cant_trans
+	FROM transaction
+	GROUP BY user_id
+	HAVING cant_trans > 30) user_trans
+WHERE u.id=user_trans.user_id;
 
 
 #Ejercicio 2. Muestra el promedio de las transacciones por IBAN de las tarjetas de crédito en la compañía Donec Ltd. utilizando al menos 2 tablas.
@@ -30,7 +30,13 @@ ON cc.id=atc.card_id;
  
 /* NIVEL 2 */
 /* Crea una nueva tabla que refleje el estado de las tarjetas de crédito basado en si las últimas tres transacciones fueron declinadas. */
-CREATE TABLE IF NOT EXISTS card_status AS
+DROP TABLE IF EXISTS card_status;
+CREATE TABLE IF NOT EXISTS card_status (
+	id_tarjeta VARCHAR(15),
+    estado_tarjeta VARCHAR(50)
+);
+
+INSERT INTO card_status (id_tarjeta, estado_tarjeta)
 (WITH trans_card AS 
 (
 SELECT 	card_id, 
@@ -72,7 +78,6 @@ FROM transaction_product tp
 JOIN transaction t 
 ON tp.transaction_id = t.id
 GROUP BY product_id
-ORDER BY product_id
 )
 SELECT 	p.*,
         IFNULL(v.cant_acept,0) AS cantidad_vendida,
@@ -81,22 +86,3 @@ SELECT 	p.*,
 FROM product p
 LEFT JOIN ventas v
 ON v.product_id=p.id;
-
-----------------------------------------------------------------------------
-
-WITH transacciones AS
-(
-SELECT 	tp.*, t.declined
-FROM transaction_product tp
-JOIN transaction t
-ON tp.transaction_id=t.id
-)
-SELECT 	product_name AS producto, 
-		SUM(CASE WHEN declined=0 THEN 1 ELSE 0 END) AS cantidad_vendida,
-        SUM(CASE when declined=1 THEN 1 ELSE 0 END) AS cantidad_rechazada,
-        COUNT(product_id) AS cantidad_total
-FROM product p
-LEFT JOIN transacciones t
-	ON t.product_id=p.id
-GROUP BY producto
-ORDER BY cantidad_total DESC, producto;
