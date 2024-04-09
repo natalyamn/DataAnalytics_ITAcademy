@@ -78,7 +78,6 @@ WHERE id='108B1D1D-5B23-A76C-55EF-C568E49A99DD';
 ALTER TABLE credit_card
 DROP COLUMN pan;
 
-CALL all_credit_card();
 
 /* NIVEL 2 */
 
@@ -97,20 +96,20 @@ Nombre de la compañía. Teléfono de contacto. País de residencia. Promedio de
 Presenta la vista creada, ordenando los datos de mayor a menor promedio de compra. 
 */
 CREATE VIEW VistaMarketing AS
-SELECT 	c.company_name AS nombre_compañia,
+(SELECT c.company_name AS nombre_compañia,
 		c.phone AS telefono_contacto,
 		c.country AS pais_residencia,
         compras.avg_compras AS promedio_compras
-FROM company c
-JOIN (SELECT company_id, ROUND(AVG(amount),2) AS avg_compras
-		FROM transaction
-		GROUP BY company_id) compras
-ON compras.company_id=c.id
-ORDER BY promedio_compras DESC;
+FROM company c, 
+	(SELECT company_id, ROUND(AVG(amount),2) AS avg_compras
+	FROM transaction
+	GROUP BY company_id) compras
+WHERE compras.company_id=c.id
+ORDER BY promedio_compras DESC);
 
 SELECT * FROM VistaMarketing; 
 
-
+ 
 #Ejercicio 3. Filtra la vista VistaMarketing para mostrar sólo las compañías que tienen su país de residencia en "Germany". 
 SELECT * 
 FROM VistaMarketing 
@@ -152,7 +151,7 @@ Nombre de la compañía de la transacción realizada
 Asegúrate de incluir información relevante de las tablas y utiliza alias para cambiar de nombre columnas según sea necesario. 
 Muestra los resultados de la vista, ordena los resultados de forma descendente en función de la variable ID de transacción. */
 CREATE VIEW InformeTecnico AS
-SELECT 	t.id AS ID_transaccion, 
+(SELECT t.id AS ID_transaccion, 
 		u.name AS Nombre_usuario, 
         u.surname AS Apellido_usuario, 
         cred.iban AS IBAN_tarjeta,
@@ -164,6 +163,6 @@ JOIN credit_card cred
 	ON t.credit_card_id=cred.id
 JOIN company c
 	ON t.company_id=c.id
-ORDER BY t.id DESC;
+ORDER BY ID_transaccion DESC);
 
 SELECT * FROM InformeTecnico;
