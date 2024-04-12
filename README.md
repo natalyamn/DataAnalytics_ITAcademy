@@ -2,7 +2,7 @@
 
 ## MySQL Workbench
 
-Sprint 1: Nociones básicas i componentes clave en el diseño de bases de datos relacionales 
+Sprint 1: Nociones básicas y componentes clave en el diseño de bases de datos relacionales 
 
 Sprint 2: Subconsultas para extraer información de la base de datos
 
