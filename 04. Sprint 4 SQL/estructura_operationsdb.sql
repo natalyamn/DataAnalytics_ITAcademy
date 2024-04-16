@@ -40,6 +40,12 @@ CREATE TABLE IF NOT EXISTS credit_card (
     expiring_date DATE,
     PRIMARY KEY(id)
 );
+#CORRECCION POSTERIOR A LA CREACIÓN DE LA TABLA: modifico tipo de dato de columna pin y cvv a VARCHAR
+ALTER TABLE credit_card
+MODIFY COLUMN pin VARCHAR(4);
+
+ALTER TABLE credit_card
+MODIFY COLUMN cvv VARCHAR(3);
 
 -- creamos tabla product para products.csv
 CREATE TABLE IF NOT EXISTS product (
@@ -89,6 +95,7 @@ LINES TERMINATED BY '\r\n'
 IGNORE 1 ROWS
 (id, name, surname, phone, email, @birth_date, country, city, postal_code,address)
 SET birth_date=STR_TO_DATE(@birth_date,'%b %e, %Y');
+
 -- usuarios de UK:
 LOAD DATA INFILE 'C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/users_uk.csv' 
 INTO TABLE user
@@ -98,6 +105,7 @@ LINES TERMINATED BY '\r\n'
 IGNORE 1 ROWS
 (id, name, surname, phone, email, @birth_date, country, city, postal_code,address)
 SET birth_date=STR_TO_DATE(@birth_date,'%b %e, %Y');
+
 -- usuarios de CANADA:
 LOAD DATA INFILE 'C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/users_ca.csv' 
 INTO TABLE user
@@ -164,6 +172,7 @@ CREATE TEMPORARY TABLE transaction_product_varchar_temp (
     transaction_id VARCHAR(50),
     product_ids VARCHAR(100)
 );
+
 LOAD DATA INFILE 'C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/transactions.csv' 
 INTO TABLE transaction_product_varchar_temp
 FIELDS TERMINATED BY ';' 
@@ -177,6 +186,7 @@ CREATE TEMPORARY TABLE transaction_product_int_temp (
     transaction_id VARCHAR(50),
     product_id INT
 );
+
 INSERT INTO transaction_product_int_temp (transaction_id, product_id)
 SELECT 	transaction_id,
 		SUBSTRING_INDEX(SUBSTRING_INDEX(product_ids, ',', numbers.n), ',', -1) AS product_id

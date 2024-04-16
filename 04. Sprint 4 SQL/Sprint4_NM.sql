@@ -3,13 +3,12 @@ USE operations;
 /* NIVEL 1 */
 
 #Ejercicio 1. Realiza una subconsulta que muestre a todos los usuarios con más de 30 transacciones utilizando al menos 2 tablas. 
-SELECT u.*, user_trans.cant_trans 
-FROM user u,
-	(SELECT user_id, COUNT(id) AS cant_trans
-	FROM transaction
-	GROUP BY user_id
-	HAVING cant_trans > 30) user_trans
-WHERE u.id=user_trans.user_id;
+SELECT u.*, COUNT(t.id) AS num_transacciones
+FROM user u
+JOIN transaction t 
+ON u.id = t.user_id
+GROUP BY t.user_id
+HAVING num_transacciones > 30;
 
 
 #Ejercicio 2. Muestra el promedio de las transacciones por IBAN de las tarjetas de crédito en la compañía Donec Ltd. utilizando al menos 2 tablas.
@@ -25,12 +24,11 @@ GROUP BY card_id
 SELECT iban, atc.avg_amount AS promedio_transaccion
 FROM credit_card cc
 JOIN avg_trans_card atc
-ON cc.id=atc.card_id;
+ON cc.id = atc.card_id;
  
  
 /* NIVEL 2 */
 /* Crea una nueva tabla que refleje el estado de las tarjetas de crédito basado en si las últimas tres transacciones fueron declinadas. */
-DROP TABLE IF EXISTS card_status;
 CREATE TABLE IF NOT EXISTS card_status (
 	id_tarjeta VARCHAR(15),
     estado_tarjeta VARCHAR(50)
@@ -53,13 +51,13 @@ SELECT 	card_id AS id_tarjeta,
 FROM trans_card
 WHERE row_transaction <= 3 
 GROUP BY id_tarjeta
-HAVING COUNT(card_id) = 3
+HAVING COUNT(id_tarjeta) = 3
 );
 
 SELECT * FROM card_status;
 
 #Ejercicio 1. ¿Cuántas tarjetas están activas? 
-SELECT COUNT(id_tarjeta) AS 'cantidad tarjetas activas'
+SELECT COUNT(*) AS 'cantidad tarjetas activas'
 FROM card_status
 WHERE estado_tarjeta='operativa';
  
