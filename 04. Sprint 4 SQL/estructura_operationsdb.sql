@@ -2,7 +2,6 @@ CREATE DATABASE IF NOT EXISTS operations;
 USE operations;
 
 -- creamos tabla user para users_ca.csv + users_uk.csv + users_usa.csv
-DROP TABLE IF EXISTS user;
 CREATE TABLE IF NOT EXISTS user (
 	id INT,
     name VARCHAR(50),
@@ -18,7 +17,6 @@ CREATE TABLE IF NOT EXISTS user (
 );
 
 -- creamos tabla company para companies.csv
-DROP TABLE IF EXISTS company;
 CREATE TABLE IF NOT EXISTS company (
 	company_id VARCHAR(10),
     company_name VARCHAR(255),
@@ -30,7 +28,6 @@ CREATE TABLE IF NOT EXISTS company (
 );
 
 -- creamos tabla credit_card para credit_cards.csv 
-DROP TABLE IF EXISTS credit_card;
 CREATE TABLE IF NOT EXISTS credit_card (
 	id VARCHAR(15),
     user_id INT, 			
@@ -45,7 +42,6 @@ CREATE TABLE IF NOT EXISTS credit_card (
 );
 
 -- creamos tabla product para products.csv
-DROP TABLE IF EXISTS product;
 CREATE TABLE IF NOT EXISTS product (
 	id INT,
     product_name VARCHAR(255),
@@ -57,7 +53,6 @@ CREATE TABLE IF NOT EXISTS product (
 );
 
 -- creamos la tabla transacciones para transactions.csv
-DROP TABLE IF EXISTS transaction;
 CREATE TABLE IF NOT EXISTS transaction (
 	id VARCHAR(50) NOT NULL,
     card_id VARCHAR(15) NOT NULL,
@@ -75,7 +70,6 @@ CREATE TABLE IF NOT EXISTS transaction (
 );
 
 -- creamos tabla transaction_product para saber los productos que se compraron en cada transacción
-DROP TABLE IF EXISTS transaction_product;
 CREATE TABLE IF NOT EXISTS transaction_product (
 	transaction_id VARCHAR(50) NOT NULL,
     product_id INT NOT NULL,
@@ -164,6 +158,7 @@ SELECT * FROM transaction;
 
 
 -- cargamos datos a la tabla transaction_product -- OK :')
+
 -- PASO 1: creamos tabla temporal para cargar los datos de product_ids en formato VARCHAR y separarlos posteriormente
 CREATE TEMPORARY TABLE transaction_product_varchar_temp (
     transaction_id VARCHAR(50),
@@ -176,6 +171,7 @@ LINES TERMINATED BY '\r\n'
 IGNORE 1 ROWS
 (transaction_id, @dummy, @dummy, @dummy, @dummy, @dummy, product_ids, @dummy, @dummy, @dummy);
 SELECT * FROM transaction_product_varchar_temp;
+
 -- PASO 2: creamos otra tabla temporal para que los productos tengan datatype INT y separamos los valores de columna en fila
 CREATE TEMPORARY TABLE transaction_product_int_temp (
     transaction_id VARCHAR(50),
@@ -191,6 +187,7 @@ JOIN (	SELECT 1 AS n
         UNION ALL SELECT 4	) AS numbers 
 ON CHAR_LENGTH(product_ids) - CHAR_LENGTH(REPLACE(product_ids, ',', '')) >= n - 1;
 SELECT * FROM transaction_product_int_temp;
+
 -- PASO 3: insertamos en la tabla transaction_product que usaremos en nuestro modelo y eliminamos las tablas temporales
 INSERT INTO transaction_product (transaction_id, product_id)
 SELECT * FROM transaction_product_int_temp;
