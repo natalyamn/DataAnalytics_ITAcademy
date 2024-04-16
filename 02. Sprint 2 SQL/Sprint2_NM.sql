@@ -31,10 +31,9 @@ sólo recuerdan que su nombre iniciaba con la letra c. ¿Cómo puedes ayudarles?
 SELECT company_c.company_name, t.* 
 FROM transaction t, 
 	(SELECT id, company_name
-	FROM transactions_2.company
+	FROM company
 	WHERE company_name LIKE 'c%') company_c
 WHERE t.company_id=company_c.id;
-
 
      
 -- Ejercicio 4
