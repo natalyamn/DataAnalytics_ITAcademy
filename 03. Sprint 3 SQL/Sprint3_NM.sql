@@ -79,7 +79,7 @@ SELECT *
 FROM transaction
 WHERE id='108B1D1D-5B23-A76C-55EF-C568E49A99DD';
 
-select * from TRANSACTION;
+SELECT * FROM transaction;
 
 #Ejercicio 4. Desde recursos humanos te solicitan eliminar la columna "pan" de la tabla credit_card. Recuerda mostrar el cambio realizado. 
 ALTER TABLE credit_card
