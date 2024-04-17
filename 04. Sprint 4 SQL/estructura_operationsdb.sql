@@ -116,7 +116,7 @@ IGNORE 1 ROWS
 (id, name, surname, phone, email, @birth_date, country, city, postal_code,address)
 SET birth_date=STR_TO_DATE(@birth_date,'%b %e, %Y');
 
-SELECT * FROM operations.user;
+SELECT * FROM user;
 
 
 -- cargamos datos a la tabla company -- OK!!
@@ -168,41 +168,32 @@ SELECT * FROM transaction;
 -- cargamos datos a la tabla transaction_product -- OK :')
 
 -- PASO 1: creamos tabla temporal para cargar los datos de product_ids en formato VARCHAR y separarlos posteriormente
-CREATE TEMPORARY TABLE transaction_product_varchar_temp (
+CREATE TEMPORARY TABLE transaction_product_temp (
     transaction_id VARCHAR(50),
     product_ids VARCHAR(100)
 );
 
 LOAD DATA INFILE 'C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/transactions.csv' 
-INTO TABLE transaction_product_varchar_temp
+INTO TABLE transaction_product_temp
 FIELDS TERMINATED BY ';' 
 LINES TERMINATED BY '\r\n'
 IGNORE 1 ROWS
 (transaction_id, @dummy, @dummy, @dummy, @dummy, @dummy, product_ids, @dummy, @dummy, @dummy);
-SELECT * FROM transaction_product_varchar_temp;
 
--- PASO 2: creamos otra tabla temporal para que los productos tengan datatype INT y separamos los valores de columna en fila
-CREATE TEMPORARY TABLE transaction_product_int_temp (
-    transaction_id VARCHAR(50),
-    product_id INT
-);
+SELECT * FROM transaction_product_temp;
 
-INSERT INTO transaction_product_int_temp (transaction_id, product_id)
-SELECT 	transaction_id,
+-- PASO 2: separamos los valores de columna en fila y los insertamos en la tabla transaction_product que usaremos en nuestro modelo
+INSERT INTO transaction_product (transaction_id, product_id)
+(SELECT 	transaction_id,
 		SUBSTRING_INDEX(SUBSTRING_INDEX(product_ids, ',', numbers.n), ',', -1) AS product_id
-FROM transaction_product_varchar_temp
+FROM transaction_product_temp
 JOIN (	SELECT 1 AS n 
 		UNION ALL SELECT 2 
         UNION ALL SELECT 3 
         UNION ALL SELECT 4	) AS numbers 
-ON CHAR_LENGTH(product_ids) - CHAR_LENGTH(REPLACE(product_ids, ',', '')) >= n - 1;
-SELECT * FROM transaction_product_int_temp;
-
--- PASO 3: insertamos en la tabla transaction_product que usaremos en nuestro modelo y eliminamos las tablas temporales
-INSERT INTO transaction_product (transaction_id, product_id)
-SELECT * FROM transaction_product_int_temp;
-
-DROP TEMPORARY TABLE transaction_product_varchar_temp;
-DROP TEMPORARY TABLE transaction_product_int_temp;
+ON CHAR_LENGTH(product_ids) - CHAR_LENGTH(REPLACE(product_ids, ',', '')) >= n - 1);
 
 SELECT * FROM transaction_product;
+
+-- PASO 3: eliminamos la tabla temporal transaction_product_temp
+DROP TEMPORARY TABLE transaction_product_temp;

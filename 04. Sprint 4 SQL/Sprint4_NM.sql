@@ -3,11 +3,12 @@ USE operations;
 /* NIVEL 1 */
 
 #Ejercicio 1. Realiza una subconsulta que muestre a todos los usuarios con más de 30 transacciones utilizando al menos 2 tablas. 
-SELECT u.*, COUNT(t.id) AS num_transacciones
+SELECT 	u.*, 
+		(SELECT COUNT(id) 
+        FROM transaction t 
+        WHERE t.user_id = u.id) AS num_transacciones
 FROM user u
-JOIN transaction t 
-ON u.id = t.user_id
-GROUP BY t.user_id
+GROUP BY u.id
 HAVING num_transacciones > 30;
 
 
