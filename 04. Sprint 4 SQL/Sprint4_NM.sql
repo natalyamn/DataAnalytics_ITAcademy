@@ -36,7 +36,7 @@ CREATE TABLE IF NOT EXISTS card_status (
 );
 
 INSERT INTO card_status (id_tarjeta, estado_tarjeta)
-(WITH trans_card AS 
+WITH trans_card AS 
 (
 SELECT 	card_id, 
 		timestamp, 
@@ -51,9 +51,7 @@ SELECT 	card_id AS id_tarjeta,
 		END AS estado_tarjeta
 FROM trans_card
 WHERE row_transaction <= 3 
-GROUP BY id_tarjeta
-HAVING COUNT(id_tarjeta) = 3
-);
+GROUP BY id_tarjeta;
 
 SELECT * FROM card_status;
 
@@ -67,21 +65,14 @@ WHERE estado_tarjeta='operativa';
 /* Crea una tabla con la que podamos unir los datos del nuevo archivo products.csv con la base de datos creada, teniendo en cuenta que desde transaction 
 tienes product_ids. */
 #Ejercicio 1. Necesitamos conocer el número de veces que se ha vendido cada producto. 
-WITH ventas AS
-(
-SELECT 	product_id,
-		SUM(CASE WHEN declined = 0 THEN 1 ELSE 0 END) AS cant_acept,
-		SUM(CASE WHEN declined = 1 THEN 1 ELSE 0 END) AS cant_rech,
-        COUNT(product_id) AS cant_tot
+SELECT 	p.product_name AS producto, 
+		SUM(CASE WHEN t.declined=0 THEN 1 ELSE 0 END) AS cantidad_vendida,
+        SUM(CASE when t.declined=1 THEN 1 ELSE 0 END) AS cantidad_rechazada,
+        COUNT(tp.product_id) AS cantidad_total
 FROM transaction_product tp
-JOIN transaction t 
-ON tp.transaction_id = t.id
-GROUP BY product_id
-)
-SELECT 	p.*,
-        IFNULL(v.cant_acept,0) AS cantidad_vendida,
-        IFNULL(v.cant_rech,0) AS cantidad_rechazada,
-        IFNULL(cant_tot,0) AS cantidad_total
-FROM product p
-LEFT JOIN ventas v
-ON v.product_id=p.id;
+JOIN transaction t
+	ON tp.transaction_id=t.id
+RIGHT JOIN product p 
+	ON tp.product_id=p.id
+GROUP BY producto
+ORDER BY cantidad_total DESC, producto;
