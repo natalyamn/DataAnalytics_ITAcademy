@@ -15,3 +15,7 @@ Sprint 4: Creación y modelado de base de datos
 Sprint 5: Iniciación al análisis de datos con Power BI e indicadores
 
 Sprint 6: Análisis avanzado de las visualizaciones interactivas con Power BI
+
+## Python: Jupyter Notebook
+
+Sprint 7: Estructuras de datos y de control
