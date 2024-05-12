@@ -1,6 +1,6 @@
 # Repositorio de Ejercicios del Bootcamp Data Analytics de IT Academy
 
-## MySQL Workbench
+## ![MySQL Workbench](https://res.cloudinary.com/practicaldev/image/fetch/s--GmqnDqDB--/c_limit%2Cf_auto%2Cfl_progressive%2Cq_auto%2Cw_880/https://dev-to-uploads.s3.amazonaws.com/uploads/articles/0n75nwkmh0ab6knjfbps.jpg)
 
 [Sprint 1](https://github.com/natalyamn/DataAnalytics_ITAcademy/tree/main/01.%20Sprint%201%20SQL): Nociones básicas y componentes clave en el diseño de bases de datos relacionales
 
