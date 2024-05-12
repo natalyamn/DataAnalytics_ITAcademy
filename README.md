@@ -1,5 +1,3 @@
-# Repositorio del Bootcamp Data Analytics de IT Academy
-
 ![image_mysql](https://github.com/natalyamn/DataAnalytics_ITAcademy/assets/161460223/d2ef617f-e0ce-42e6-ad34-95e63de9a457)
 
 ### [Sprint 1.](https://github.com/natalyamn/DataAnalytics_ITAcademy/tree/main/01.%20Sprint%201%20SQL) Nociones básicas y componentes clave en el diseño de bases de datos relacionales
