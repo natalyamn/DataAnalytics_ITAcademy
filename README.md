@@ -1,15 +1,15 @@
 # Repositorio de Ejercicios del Bootcamp Data Analytics de IT Academy
 
 ## MySQL Workbench
-![image](https://github.com/natalyamn/DataAnalytics_ITAcademy/assets/161460223/0f6bbab6-5552-449a-b134-09a9e9492fc1)
+![mysql_banner](https://github.com/natalyamn/DataAnalytics_ITAcademy/assets/161460223/7797f07b-fa34-4993-8efc-9f578d98dbb9)
 
-[Sprint 1](https://github.com/natalyamn/DataAnalytics_ITAcademy/tree/main/01.%20Sprint%201%20SQL): Nociones básicas y componentes clave en el diseño de bases de datos relacionales
+#### [Sprint 1](https://github.com/natalyamn/DataAnalytics_ITAcademy/tree/main/01.%20Sprint%201%20SQL): Nociones básicas y componentes clave en el diseño de bases de datos relacionales
 
-[Sprint 2](https://github.com/natalyamn/DataAnalytics_ITAcademy/tree/main/02.%20Sprint%202%20SQL): Subconsultas para extraer información de la base de datos
+#### [Sprint 2](https://github.com/natalyamn/DataAnalytics_ITAcademy/tree/main/02.%20Sprint%202%20SQL): Subconsultas para extraer información de la base de datos
 
-[Sprint 3](https://github.com/natalyamn/DataAnalytics_ITAcademy/tree/main/03.%20Sprint%203%20SQL): Gestión de tablas, índices y vistas 
+#### [Sprint 3](https://github.com/natalyamn/DataAnalytics_ITAcademy/tree/main/03.%20Sprint%203%20SQL): Gestión de tablas, índices y vistas 
 
-[Sprint 4](https://github.com/natalyamn/DataAnalytics_ITAcademy/tree/main/04.%20Sprint%204%20SQL): Creación y modelado de base de datos
+#### [Sprint 4](https://github.com/natalyamn/DataAnalytics_ITAcademy/tree/main/04.%20Sprint%204%20SQL): Creación y modelado de base de datos
 
 ## Power BI Desktop
 
