@@ -1,4 +1,4 @@
-# Repositorio del Bootcamp Data Analytics de IT Academy 📊
+# Repositorio del Bootcamp Data Analytics de IT Academy
 
 ![image_mysql](https://github.com/natalyamn/DataAnalytics_ITAcademy/assets/161460223/5bfc48f6-31f3-46e0-99f7-5707b9dcc356)
 
