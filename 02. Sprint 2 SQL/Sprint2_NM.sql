@@ -25,7 +25,7 @@ WHERE id IN (SELECT company_id
 			);
 
 
--- Ejercicio 3 --> CORRECCION: uso de subquery correlacionada en SELECT para sacar el nombre de la empresa
+-- Ejercicio 3 
 /*El departamento de contabilidad perdió la información de las transacciones realizadas por una empresa, pero no recuerdan su nombre, 
 sólo recuerdan que su nombre iniciaba con la letra c. ¿Cómo puedes ayudarles? Coméntelo acompañándolo de la información de las transacciones.*/
 SELECT company_c.company_name, t.* 
