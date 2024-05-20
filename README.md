@@ -1,6 +1,6 @@
 ![image_mysql](https://github.com/natalyamn/DataAnalytics_ITAcademy/assets/161460223/d2ef617f-e0ce-42e6-ad34-95e63de9a457)
 
-### [Sprint 1.](https://github.com/natalyamn/DataAnalytics_ITAcademy/tree/main/01.%20Sprint%201%20SQL) Nociones básicas y componentes clave en el diseño de bases de datos relacionales
+### [Sprint 1.](https://github.com/natalyamn/DataAnalytics_ITAcademy/tree/main/01.%20Sprint%201%20SQL) Nociones básicas y componentes clave en el diseño de Base de Datos Relacionales
 
 ### [Sprint 2.](https://github.com/natalyamn/DataAnalytics_ITAcademy/tree/main/02.%20Sprint%202%20SQL) Subconsultas para extraer información de la base de datos
 
@@ -19,3 +19,11 @@
 ![image_python](https://github.com/natalyamn/DataAnalytics_ITAcademy/assets/161460223/9484a4b9-ef11-4efc-ba60-a7e803f61f5a)
 
 ### [Sprint 7.](https://github.com/natalyamn/DataAnalytics_ITAcademy/tree/main/07.%20Sprint%207%20Python) Estructuras de datos y de control
+
+### Sprint 8. Visualizaciones en Python y scripts en Power BI
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+![image_mongodb](https://github.com/natalyamn/DataAnalytics_ITAcademy/assets/161460223/8e302e6e-1561-4fd7-b029-c3cf62bdb429)
+
+### Sprint 9. Base de Datos No Relacionales: consultas con MongoDB
+
