@@ -20,7 +20,7 @@
 
 ### [Sprint 7.](https://github.com/natalyamn/DataAnalytics_ITAcademy/tree/main/07.%20Sprint%207%20Python) Estructuras de datos y de control
 
-### Sprint 8. Visualizaciones en Python y scripts en Power BI
+### [Sprint 8.](https://github.com/natalyamn/DataAnalytics_ITAcademy/tree/main/08.%20Sprint%208%20Python) Visualizaciones en Python y scripts en Power BI
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 ![image_mongodb](https://github.com/natalyamn/DataAnalytics_ITAcademy/assets/161460223/8e302e6e-1561-4fd7-b029-c3cf62bdb429)
