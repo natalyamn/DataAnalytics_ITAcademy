@@ -27,5 +27,5 @@
 
 ![image_mongodb](https://github.com/natalyamn/DataAnalytics_ITAcademy/assets/161460223/8e302e6e-1561-4fd7-b029-c3cf62bdb429)
 
-### Sprint 9. Bases de Datos No Relacionales: consultas con MongoDB
+### [Sprint 9.](https://github.com/natalyamn/DataAnalytics_ITAcademy/tree/main/09.%20Sprint%209%20MongoDB) Bases de Datos No Relacionales: consultas con MongoDB
 
